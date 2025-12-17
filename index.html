@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kawaii Jellyfish World</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Comic Sans MS", "Segoe UI", sans-serif;
+      color: #04364a;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    .ocean {
+      background: linear-gradient(to bottom, #dff4ff, #9ad9ff, #5bbcff, #2a9df4);
+      position: relative;
+    }
+
+    .page {
+      display: none;
+      min-height: 100vh;
+      padding: 40px 20px;
+      box-sizing: border-box;
+    }
+
+    .active { display: block; }
+
+    h1 { font-size: 2.4rem; margin-bottom: 10px; }
+    p { max-width: 760px; margin: 0 auto 30px; font-size: 1.1rem; }
+
+    button {
+      padding: 12px 28px;
+      margin: 10px;
+      border-radius: 40px;
+      border: none;
+      background: linear-gradient(145deg, #ffb6e6, #ff8fd1);
+      color: #fff;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 8px 0 #ff6fb3;
+    }
+
+    button:hover { transform: translateY(3px); box-shadow: 0 5px 0 #ff6fb3; }
+
+    .back {
+      background: linear-gradient(145deg, #9ad9ff, #6fc6ff);
+      box-shadow: 0 8px 0 #4fb3e8;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    .jellyfish {
+      width: 230px;
+      margin: 70px auto 20px;
+      animation: float 3.5s ease-in-out infinite;
+    }
+
+    .floaty {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.5);
+      animation: bubble 8s linear infinite;
+    }
+
+    @keyframes bubble {
+      from { transform: translateY(0); opacity: 0; }
+      to { transform: translateY(-120vh); opacity: 0.8; }
+    }
+
+    .species-grid {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none; /* NEVER blocks UI */
+}
+
+.floating-jelly {
+  position: absolute;
+  font-size: 2.8rem;
+  animation: float 6s ease-in-out infinite;
+  opacity: 0.9;
+  pointer-events: auto;
+}
+
+.ui-layer {
+  position: relative;
+  z-index: 10;
+}
+
+    /* Allow clicks on jellyfish ONLY on the Meet the Jellyfish page */
+    #species .species-grid {
+      pointer-events: none; /* background layer does NOT block clicks */
+}
+
+    /* Allow clicks on jellyfish ONLY on the Meet the Jellyfish page */
+    #species .species-grid {
+      pointer-events: auto;
+    }
+
+    .floating-jelly {
+      position: absolute;
+      font-size: 2.8rem;
+      animation: float 6s ease-in-out infinite;
+      opacity: 0.35;
+      pointer-events: auto;
+    }
+
+    /* Make jellyfish fully visible on Meet the Jellyfish page */
+    #species .floating-jelly {
+      pointer-events: auto; /* only jellyfish are clickable */
+      opacity: 0.9;
+}
+
+    .species {
+      font-size: 2.6rem;
+      cursor: pointer;
+      animation: float 5s ease-in-out infinite;
+    }
+
+    .species-name {
+      font-size: 1rem;
+      margin-top: 8px;
+    }
+
+    img {
+      max-width: 260px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+
+<!-- BUBBLES -->
+<div class="floaty" style="left:10%; bottom:-50px; animation-delay:0s"></div>
+<div class="floaty" style="left:25%; bottom:-80px; animation-delay:2s"></div>
+<div class="floaty" style="left:40%; bottom:-60px; animation-delay:4s"></div>
+<div class="floaty" style="left:55%; bottom:-90px; animation-delay:1s"></div>
+<div class="floaty" style="left:70%; bottom:-70px; animation-delay:3s"></div>
+<div class="floaty" style="left:85%; bottom:-100px; animation-delay:5s"></div>
+
+<!-- HOME -->
+<div id="home" class="page active ocean">
+  <svg class="jellyfish" viewBox="0 0 200 260">
+    <ellipse cx="100" cy="90" rx="70" ry="55" fill="#ffc1e3" />
+    <path d="M30 90 Q100 150 170 90" fill="#ffc1e3" />
+    <circle cx="80" cy="90" r="7" fill="#333" />
+    <circle cx="120" cy="90" r="7" fill="#333" />
+    <circle cx="78" cy="88" r="2" fill="#fff" />
+    <circle cx="118" cy="88" r="2" fill="#fff" />
+    <path d="M90 108 Q100 118 110 108" stroke="#333" stroke-width="3" fill="none" />
+    <line x1="65" y1="140" x2="65" y2="250" stroke="#ff8ccf" stroke-width="4" />
+    <line x1="100" y1="140" x2="100" y2="260" stroke="#ff8ccf" stroke-width="4" />
+    <line x1="135" y1="140" x2="135" y2="250" stroke="#ff8ccf" stroke-width="4" />
+  </svg>
+  <h1>Hi! I'm a jellyfish 🪼</h1>
+  <p>Want to know more about me?</p>
+  <button onclick="showPage('menu')">Yes please ✨</button>
+</div>
+
+<!-- MENU -->
+<div id="menu" class="page ocean">
+  <h1>All About Jellyfish 🪼</h1>
+  <p>Click a topic to explore how jellyfish survive in the ocean 🌊</p>
+
+  <!-- FLOATING JELLYFISH BACKGROUND -->
+  <div class="species-grid">
+    <div class="floating-jelly" style="left:8%; top:12%; animation-duration:5s">🪼</div>
+    <div class="floating-jelly" style="left:22%; top:65%; animation-duration:7s">🪼</div>
+    <div class="floating-jelly" style="left:35%; top:30%; animation-duration:6s">🪼</div>
+    <div class="floating-jelly" style="left:48%; top:75%; animation-duration:8s">🪼</div>
+    <div class="floating-jelly" style="left:60%; top:18%; animation-duration:5.5s">🪼</div>
+    <div class="floating-jelly" style="left:72%; top:55%; animation-duration:7.5s">🪼</div>
+    <div class="floating-jelly" style="left:85%; top:28%; animation-duration:6.5s">🪼</div>
+    <div class="floating-jelly" style="left:12%; top:85%; animation-duration:9s">🪼</div>
+    <div class="floating-jelly" style="left:28%; top:8%; animation-duration:6.8s">🪼</div>
+    <div class="floating-jelly" style="left:42%; top:48%; animation-duration:7.2s">🪼</div>
+    <div class="floating-jelly" style="left:55%; top:90%; animation-duration:8.5s">🪼</div>
+    <div class="floating-jelly" style="left:68%; top:40%; animation-duration:6.3s">🪼</div>
+    <div class="floating-jelly" style="left:90%; top:70%; animation-duration:9s">🪼</div>
+  </div>
+
+  <!-- TOPIC BUTTONS -->
+  <div style="position:relative;z-index:2;">
+    <button onclick="showPage('feeding')">Feeding & Digestion</button>
+    <button onclick="showPage('respiration')">Respiration</button>
+    <button onclick="showPage('circulation')">Circulation</button>
+    <button onclick="showPage('excretion')">Excretion</button>
+    <button onclick="showPage('response')">Response</button>
+    <button onclick="showPage('movement')">Movement & Support</button>
+    <button onclick="showPage('reproduction')">Reproduction</button>
+    <button onclick="showPage('homeostasis')">Homeostasis</button>
+    <button onclick="showPage('lifecycle')">Life Cycle</button>
+    <button onclick="showPage('species')">Meet the Jellyfish 🪼</button>
+    <button onclick="showPage('references')">References</button>
+    <button class="back" onclick="showPage('home')">Back</button>
+  </div>
+</div>
+
+<!-- BODY SYSTEM PAGES -->
+<div id="feeding" class="page ocean">
+  <h1>Feeding & Digestion</h1>
+  <img src="images/feeding_diagram.jpg" alt="Jellyfish feeding and digestion diagram">
+  <p>
+    Jellyfish capture prey using tentacles covered with stinging cells called nematocysts.
+    Once prey is immobilized, it is moved to the mouth and digested in a central cavity
+    called the gastrovascular cavity, where enzymes break it down.
+  </p>
+  <h3>Learn more</h3>
+  <ul>
+    <li><a href="https://www.nationalgeographic.com/animals/invertebrates/facts/jellyfish/" target="_blank">National Geographic: Jellyfish Feeding</a></li>
+    <li><a href="https://www.britannica.com/animal/jellyfish-animal" target="_blank">Encyclopaedia Britannica: Digestion</a></li>
+  </ul>
+  <button class="back" onclick="showPage('menu')">Back</button>
+</div>
+
+<div id="respiration" class="page ocean">
+  <h1>Respiration</h1>
+  <img src="images/respiration_diagram.jpg" alt="Jellyfish respiration by diffusion diagram">
+  <p>
+    Jellyfish do not have lungs or gills. Oxygen and carbon dioxide move in and out of
+    their bodies by diffusion through thin tissues directly from the surrounding water.
+  </p>
+  <h3>Learn more</h3>
+  <ul>
+    <li><a href="https://oceanservice.noaa.gov/facts/jellyfish.html" target="_blank">NOAA: How Jellyfish Breathe</a></li>
+    <li><a href="https://www.sciencedirect.com/topics/biochemistry-genetics-and-molecular-biology/diffusion" target="_blank">ScienceDirect: Diffusion</a></li>
+  </ul>
+  <button class="back" onclick="showPage('menu')">Back</button>
+</div>
+
+<div id="circulation" class="page ocean">
+  <h1>Circulation</h1>
+  <img src="images/circulation_diagram.jpg" alt="Jellyfish circulation diagram">
+  <p>
+    Jellyfish do not have a heart or blood vessels. Nutrients are distributed throughout
+    the body by the movement of fluids inside the gastrovascular cavity.
+  </p>
+  <h3>Learn more</h3>
+  <ul>
+    <li><a href="https://www.britannica.com/science/gastrovascular-cavity" target="_blank">Britannica: Gastrovascular Cavity</a></li>
+    <li><a href="https://www.nature.com/articles/s41598-018-35307-3" target="_blank">Nature: Fluid Transport in Simple Animals</a></li>
+  </ul>
+  <button class="back" onclick="showPage('menu')">Back</button>
+</div>
+
+<div id="excretion" class="page ocean">
+  <h1>Excretion</h1>
+  <img src="images/excretion_diagram.jpg" alt="Jellyfish waste removal diagram">
+  <p>
+    Waste products such as ammonia diffuse out of the jellyfish’s body directly into the
+    surrounding water through its thin tissues.
+  </p>
+  <button class="back" onclick="showPage('menu')">Back</button>
+</div>
+
+<div id="response" class="page ocean">
+  <h1>Response</h1>
+  <img src="images/response_diagram.jpg" alt="Jellyfish nerve net diagram">
+  <p>
+    Jellyfish have a simple nerve net instead of a brain. This allows them to sense light,
+    touch, and chemicals in the water and respond by moving or stinging.
+  </p>
+  <button class="back" onclick="showPage('menu')">Back</button>
+</div>
+
+<div id="movement" class="page ocean">
+  <h1>Movement & Support</h1>
+  <img src="images/movement_diagram.jpg" alt="Jellyfish movement diagram">
+  <p>
+    Jellyfish move by rhythmically contracting and relaxing their bell, pushing water
+    behind them. Their body is supported by water pressure and a jelly-like substance
+    called mesoglea.
+  </p>
+  <button class="back" onclick="showPage('menu')">Back</button>
+</div>
+
+<div id="reproduction" class="page ocean">
+  <h1>Reproduction</h1>
+  <img src="images/reproduction_diagram.jpg" alt="Jellyfish reproduction diagram">
+  <p>
+    Jellyfish can reproduce both sexually and asexually. Adult jellyfish release eggs
+    and sperm into the water, while polyps can reproduce asexually by budding.
+  </p>
+  <button class="back" onclick="showPage('menu')">Back</button>
+</div>
+
+<div id="homeostasis" class="page ocean">
+  <h1>Homeostasis</h1>
+  <img src="images/homeostasis_diagram.jpg" alt="Jellyfish homeostasis diagram">
+  <p>
+    Jellyfish maintain balance by living in stable aquatic environments. Their bodies
+    naturally match the temperature and salt concentration of the surrounding seawater.
+  </p>
+  <button class="back" onclick="showPage('menu')">Back</button>
+</div>
+
+<div id="lifecycle" class="page ocean"><h1>Life Cycle of a Jellyfish</h1><img src="images/jellyfish_lifecycle.jpg" alt="Jellyfish life cycle diagram"><p>Jellyfish have a fascinating life cycle with several stages. It begins as a fertilized egg that develops into a free-swimming larva called a planula. The planula attaches to a surface and becomes a polyp. The polyp then reproduces asexually, releasing young jellyfish called ephyrae. These grow into adult jellyfish, also called medusae.</p><button class="back" onclick="showPage('menu')">Back</button></div>
+
+<div id="references" class="page ocean">
+  <h1>References</h1>
+  <p>This project was created for a school assignment. Information and images were gathered from reliable educational sources:</p>
+  <ul style="max-width:800px;margin:0 auto;text-align:left;font-size:1.05rem;line-height:1.7;">
+    <li>National Geographic – Jellyfish Overview</li>
+    <li>Encyclopaedia Britannica – Jellyfish Biology</li>
+    <li>NOAA Ocean Service – Marine Life Information</li>
+    <li>Smithsonian Ocean – Jellyfish Facts</li>
+    <li>Wikimedia Commons – Jellyfish Images (Creative Commons)</li>
+  </ul>
+  <p style="margin-top:30px;">All images are used for educational purposes.</p>
+  <button class="back" onclick="showPage('menu')">Back</button>
+</div>
+
+<!-- SPECIES OVERVIEW -->
+<div id="species" class="page ocean" style="position:relative; overflow:hidden;">
+  <h1>Meet the Jellyfish 🪼</h1>
+  <p>Click a jellyfish to learn about each species.</p>
+
+  <!-- FLOATING JELLYFISH BACKGROUND (NON-BLOCKING) -->
+  <div class="species-grid" aria-hidden="true">
+    <div class="floating-jelly" style="left:5%; top:20%;" onclick="showPage('moon')">🪼<div class="species-name">Moon</div></div>
+    <div class="floating-jelly" style="left:18%; top:60%;" onclick="showPage('box')">🪼<div class="species-name">Box</div></div>
+    <div class="floating-jelly" style="left:30%; top:35%;" onclick="showPage('lions')">🪼<div class="species-name">Lion's Mane</div></div>
+    <div class="floating-jelly" style="left:42%; top:75%;" onclick="showPage('immortal')">🪼<div class="species-name">Immortal</div></div>
+    <div class="floating-jelly" style="left:55%; top:15%;" onclick="showPage('flower')">🪼<div class="species-name">Flower Hat</div></div>
+    <div class="floating-jelly" style="left:68%; top:50%;" onclick="showPage('cannonball')">🪼<div class="species-name">Cannonball</div></div>
+    <div class="floating-jelly" style="left:80%; top:30%;" onclick="showPage('nettle')">🪼<div class="species-name">Sea Nettle</div></div>
+    <div class="floating-jelly" style="left:10%; top:85%;" onclick="showPage('crystal')">🪼<div class="species-name">Crystal</div></div>
+    <div class="floating-jelly" style="left:25%; top:10%;" onclick="showPage('atolla')">🪼<div class="species-name">Atolla</div></div>
+    <div class="floating-jelly" style="left:45%; top:45%;" onclick="showPage('upside')">🪼<div class="species-name">Upside-Down</div></div>
+    <div class="floating-jelly" style="left:60%; top:85%;" onclick="showPage('blue')">🪼<div class="species-name">Blue Button</div></div>
+    <div class="floating-jelly" style="left:72%; top:5%;" onclick="showPage('comb')">🪼<div class="species-name">Comb</div></div>
+    <div class="floating-jelly" style="left:90%; top:65%;" onclick="showPage('manowar')">🪼<div class="species-name">Man o' War</div></div>
+  </div>
+
+  <!-- UI LAYER (ALWAYS CLICKABLE) -->
+  <div class="ui-layer">
+    <button class="back" onclick="showPage('menu')">Back</button>
+  </div>
+</div>
+
+<!-- SPECIES DETAIL TEMPLATE -->
+<div id="moon" class="page ocean"><h1>Moon Jellyfish</h1><img src="images/moon.jpg" alt="Moon jellyfish"><p>Moon jellyfish are transparent and gentle, commonly found in coastal waters around the world.</p><button class="back" onclick="showPage('species')">Back</button></div>
+<div id="box" class="page ocean"><h1>Box Jellyfish</h1><img src="images/box.jpg" alt="Box jellyfish"><p>Box jellyfish have cube-shaped bells and complex eyes, allowing them to actively hunt prey.</p><button class="back" onclick="showPage('species')">Back</button></div>
+<div id="lions" class="page ocean"><h1>Lion's Mane Jellyfish</h1><img src="images/lions_mane.jpg" alt="Lion's mane jellyfish"><p>The lion's mane jellyfish is one of the largest jellyfish species in the world.</p><button class="back" onclick="showPage('species')">Back</button></div>
+<div id="immortal" class="page ocean"><h1>Immortal Jellyfish</h1><img src="images/immortal.jpg" alt="Immortal jellyfish"><p>This species can revert back to its juvenile stage, making it biologically "immortal."</p><button class="back" onclick="showPage('species')">Back</button></div>
+<div id="flower" class="page ocean"><h1>Flower Hat Jellyfish</h1><img src="images/flower_hat.jpg" alt="Flower hat jellyfish"><p>A beautifully colored jellyfish species native to the waters around Japan.</p><button class="back" onclick="showPage('species')">Back</button></div>
+<div id="cannonball" class="page ocean"><h1>Cannonball Jellyfish</h1><img src="images/cannonball.jpg" alt="Cannonball jellyfish"><p>Round-bodied jellyfish commonly found in warm coastal waters.</p><button class="back" onclick="showPage('species')">Back</button></div>
+<div id="nettle" class="page ocean"><h1>Sea Nettle</h1><img src="images/sea_nettle.jpg" alt="Sea nettle jellyfish"><p>Sea nettles are known for their long tentacles and painful sting.</p><button class="back" onclick="showPage('species')">Back</button></div>
+<div id="crystal" class="page ocean"><h1>Crystal Jellyfish</h1><img src="images/crystal.jpg" alt="Crystal jellyfish"><p>This transparent jellyfish is famous for its natural bioluminescence.</p><button class="back" onclick="showPage('species')">Back</button></div>
+<div id="atolla" class="page ocean"><h1>Atolla Jellyfish</h1><img src="images/atolla.jpg" alt="Atolla jellyfish"><p>A deep-sea jellyfish with a striking red color.</p><button class="back" onclick="showPage('species')">Back</button></div>
+<div id="upside" class="page ocean"><h1>Upside-Down Jellyfish</h1><img src="images/upside_down.jpg" alt="Upside-down jellyfish"><p>Lives upside down on the ocean floor, hosting algae for energy.</p><button class="back" onclick="showPage('species')">Back</button></div>
+<div id="blue" class="page ocean"><h1>Blue Button Jellyfish</h1><img src="images/blue_button.jpg" alt="Blue button jellyfish"><p>A small, blue species often found near beaches.</p><button class="back" onclick="showPage('species')">Back</button></div>
+<div id="comb" class="page ocean"><h1>Comb Jelly</h1><img src="images/comb.jpg" alt="Comb jelly"><p>Comb jellies move using rows of tiny cilia instead of tentacles.</p><button class="back" onclick="showPage('species')">Back</button></div>
+<div id="manowar" class="page ocean"><h1>Portuguese Man o' War</h1><img src="images/manowar.jpg" alt="Portuguese man o' war"><p>Not a true jellyfish, but a colonial organism with a powerful sting.</p><button class="back" onclick="showPage('species')">Back</button></div>
+
+<script>
+  function showPage(pageId) {
+    const target = document.getElementById(pageId);
+    if (!target) {
+      console.error('Page not found:', pageId);
+      return;
+    }
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    target.classList.add('active');
+    window.scrollTo(0,0);
+  }
+</script>
+
+</body>
+</html>
